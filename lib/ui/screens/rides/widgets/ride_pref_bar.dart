@@ -20,8 +20,8 @@ class RidePrefBar extends StatelessWidget {
 
   final RidePreference ridePreference;
 
-  final VoidCallback onBackPressed;
-  final VoidCallback onPreferencePressed;
+  final Function(BuildContext) onBackPressed;
+  final Function(BuildContext) onPreferencePressed;
   final VoidCallback onFilterPressed;
 
   @override
@@ -37,7 +37,7 @@ class RidePrefBar extends StatelessWidget {
         children: [
           // 1 - Left icon
           IconButton(
-            onPressed: onBackPressed,
+            onPressed: ()=> onBackPressed(context),
             icon: Icon(
               Icons.arrow_back_ios,
               color: BlaColors.iconLight,
@@ -49,7 +49,7 @@ class RidePrefBar extends StatelessWidget {
           Expanded(
             child: RidePrefSummary(
               ridePref: ridePreference,
-              onPressed: onPreferencePressed,
+              onPressed: ()=> onPreferencePressed(context),
             ),
           ),
 

@@ -8,8 +8,7 @@ import '../../theme/theme.dart';
 /// This full-screen modal is in charge of providing (if confirmed) a selected location.
 ///
 class BlaLocationPicker extends StatefulWidget {
-  final Location?
-      initLocation; // The picker can be triguer with an existing location name
+  final Location? initLocation; // The picker can be triguer with an existing location name
 
   const BlaLocationPicker({super.key, this.initLocation});
 

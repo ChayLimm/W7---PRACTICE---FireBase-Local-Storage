@@ -19,7 +19,7 @@ class _RidePrefModalState extends State<RidePrefModal> {
     Navigator.of(context).pop();
   }
 
-  void onSubmit(RidePreference newPreference) {
+  void onSubmit(BuildContext context,RidePreference newPreference) {
     Navigator.of(context).pop(newPreference);
   }
 
