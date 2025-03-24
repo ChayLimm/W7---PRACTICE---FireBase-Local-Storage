@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/model/ride/ride_pref.dart';
+import 'package:week_3_blabla_project/provider/async_value.dart';
 import 'package:week_3_blabla_project/repository/ride_preferences_repository.dart';
 
-class RidesPrefsProvider extends ChangeNotifier {  
+class RidesPrefsProvider extends ChangeNotifier {
   final RidePreferencesRepository repository;
   RidesPrefsProvider(this.repository);
 
   RidePreference? _currentPreference;
+
   ///cache
-  List<RidePreference> pastRidePref = [] ;
+  AsyncValue<List<RidePreference>>? pastRidePref ;
 
   // Current preference
   RidePreference? get currentPreference {
@@ -16,23 +18,52 @@ class RidesPrefsProvider extends ChangeNotifier {
     return _currentPreference;
   }
 
+  Future<void> fetchPastPreferences() async {
+    //1. hanlde loading
+    pastRidePref = AsyncValue.loading();
+    notifyListeners();
+    try {
+      //2. handle fetching
+      List<RidePreference> pastPrefs = await getPastPreferences();
+      //3.handle succes
+      pastRidePref = AsyncValue.success(pastPrefs);
+      //4. handle error
+    } catch (e) {
+      pastRidePref = AsyncValue.error(e);
+    }
+    notifyListeners();
+  }
+
   void setCurrentPreference(RidePreference preference) {
-    if(_currentPreference != preference){
+    if (_currentPreference != preference) {
       _currentPreference = preference;
-        print('Set current pref to $_currentPreference');
-        addPreference(preference);
-        notifyListeners();
+      print('Set current pref to $_currentPreference');
+      addPreference(preference);
+      notifyListeners();
     }
   }
 
   // Past preferences
-  List<RidePreference> getPastPreferences() {
-    return repository.getPastPreferences().reversed.toList();
+  Future<List<RidePreference>> getPastPreferences() async {
+    final temp = await repository.getPastPreferences();
+    return temp.reversed.toList();
   }
 
-  void addPreference(RidePreference preference) {
-    repository.addPreference(preference);
+  Future<void> addPreference(RidePreference preference) async{
+    //option 2
+     // update catch
+    if(pastRidePref!.data!.contains(preference)){
+      pastRidePref!.data!.remove(preference);
+    }
+    pastRidePref!.data!.add(preference);
+    ///
+    /// With this its will improve app performance by reduce fetching time
+    ///
+    
+    //add preference repo 
+    await repository.addPreference(preference);
+   
     notifyListeners();
-    return ;
+    return;
   }
 }
