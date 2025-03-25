@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week_3_blabla_project/ui/provider/async_value.dart';
 import 'package:week_3_blabla_project/ui/provider/rides_prefs_provider.dart';
+import 'package:week_3_blabla_project/ui/widgets/error/bla_error.dart';
 
 import '../../../domain/model/ride/ride_pref.dart';
 import '../../theme/theme.dart';
@@ -103,7 +104,7 @@ Widget _buildRideHistory(BuildContext context,Function(BuildContext,RidePreferen
         return Center(child: CircularProgressIndicator()); // display a progress
 
       case AsyncValueState.error:
-        return Text('Error: ${postValue.error}'); // display a error
+        return BlaError(message: postValue.error as String,); // display a error
 
       case AsyncValueState.success:
 

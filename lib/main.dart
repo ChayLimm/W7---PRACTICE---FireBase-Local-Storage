@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:week_3_blabla_project/data/repository/local/local_ride_preferences_repository.dart';
 import 'package:week_3_blabla_project/ui/provider/rides_prefs_provider.dart';
 import 'data/repository/mock/mock_locations_repository.dart';
 import 'data/repository/mock/mock_rides_repository.dart';
@@ -21,7 +22,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => RidesPrefsProvider(MockRidePreferencesRepository())),
+        ChangeNotifierProvider(create: (context) => RidesPrefsProvider(LocalRidePreferencesRepository())),
       ],
       child: const MyApp(),
     ),
