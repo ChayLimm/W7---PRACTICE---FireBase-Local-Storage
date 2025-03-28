@@ -39,4 +39,13 @@ class Location {
   String toString() {
     return name;
   }
+ static Location fromJson(Map<String, dynamic> json) {
+  return Location(
+    name: json['name'],
+    country: Country.values.firstWhere(
+      (e) => e.name.toLowerCase() == json['country'].toString().toLowerCase(),
+      orElse: () => throw Exception('Country ${json['country']} not found'),
+    ),
+  );
+}
 }

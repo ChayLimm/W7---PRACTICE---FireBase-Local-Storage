@@ -28,7 +28,7 @@ class RidesPrefsProvider extends ChangeNotifier {
       //3.handle succes
       pastRidePref = AsyncValue.success(pastPrefs);
       //4. handle error
-    } catch (e) {
+    }  catch  (e) {
       pastRidePref = AsyncValue.error(e);
     }
     notifyListeners();

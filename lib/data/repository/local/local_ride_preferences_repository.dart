@@ -32,6 +32,7 @@ class LocalRidePreferencesRepository extends RidePreferencesRepository {
 
     final pref = await SharedPreferences.getInstance();
     final prefsList = pref.getStringList(_preferencesKey) ?? []; 
+    print(prefsList);
     List<RidePreference> temp =  prefsList.map((json) => RidePreference.fromDto(RidePreferencesDTO.fromJson(jsonDecode(json)))
     ).toList();
 

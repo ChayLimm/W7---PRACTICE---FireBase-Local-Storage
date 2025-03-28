@@ -23,13 +23,22 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
   // Initialize the Form attributes
   // ----------------------------------
 
-  @override
+ @override
   void initState() {
     super.initState();
-
+    
     if (widget.initLocation != null) {
-      String city = widget.initLocation!.name;
-      filteredLocations = LocationsService.instance.getLocationsFor(city);
+      _loadInitialLocations(widget.initLocation!.name);
+    }
+  }
+
+  // i use this to avoid async in init state
+  Future<void> _loadInitialLocations(String city) async {
+    final locations = await LocationsService.instance.getLocationsFor(city);
+    if (mounted) {
+      setState(() {
+        filteredLocations = locations;
+      });
     }
   }
 
@@ -41,12 +50,12 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
     Navigator.of(context).pop(location);
   }
 
-  void onSearchChanged(String searchText) {
+  Future<void> onSearchChanged(String searchText) async {
     List<Location> newSelection = [];
 
     if (searchText.length > 1) {
       // We start to search from 2 characters only.
-      newSelection = LocationsService.instance.getLocationsFor(searchText);
+      newSelection = await LocationsService.instance.getLocationsFor(searchText);
     }
 
     setState(() {
